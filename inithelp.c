@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:35:32 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/09/10 22:53:53 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/09/22 22:46:03 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,3 +58,36 @@ int	ft_isdigitbroken(char **str, int ac)
 	}
 	return (0);
 }
+
+void	setidforeach(t_main *main, int max, char **av, int ac)
+{
+	int	i;
+	int	id;
+
+	id = 1;
+	i = 0;
+	while (i < max)
+	{
+		main->philo[i].id = id;
+		id++;
+		i++;
+	}
+	if (ac == 6)
+	{
+		id = ft_atoi(av[5]);
+		i = 0;
+		while (i < max)
+		{
+			main->philo[i].numeat = id;
+			i++;
+		}
+	}
+}
+
+long long	timestamps(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+} //ver o q ]e isto
