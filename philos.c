@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 19:51:27 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/09/22 22:46:29 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/09/25 01:32:05 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,19 @@ void	startphilo(t_main *main)
 	// comer e pousar o garfo
 }
 
+int		checkdeath(t_philo *philo);
+
 void	*philololo(void	*ele)
 {
 	t_philo	*phi;
 
 	phi = (t_philo *)ele;
 	if (phi->id % 2 == 0)
-		//comer
-	while (checkdeath() == 0)
+		betterusleep(phi->main->teat / 10);
+	while (phi->main->stop == 0)
 	{
-		//tirar o garfo dos outros
+		// tirar o garfo dos outros
 		// comer 
+		// checkar se o caralho morreu
 	}
 }

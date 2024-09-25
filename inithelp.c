@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:35:32 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/09/22 22:46:03 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/09/25 01:21:00 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,11 @@ void	setidforeach(t_main *main, int max, char **av, int ac)
 	}
 }
 
-long long	timestamps(void)
+int	nodead(t_philo *philo, int i)
 {
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-} //ver o q ]e isto
+	if (i == 1)
+		philo->main->stop = 1;
+	else
+		return (0);
+	return (1);
+}
