@@ -1,6 +1,6 @@
 NAME = philo
 
-SRCS = main.c inithelp.c
+SRCS = main.c inithelp.c philos.c times.c
 
 CC = cc
 

@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:35:32 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/09/25 01:21:00 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/09/25 23:13:45 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,14 @@ void	setidforeach(t_main *main, int max, char **av, int ac)
 	while (i < max)
 	{
 		main->philo[i].id = id;
+		main->philo[i].numeat = 0;
+		main->philo[i].main = main;
 		id++;
 		i++;
 	}
 	if (ac == 6)
 	{
+		main->nummeal = ft_atoi(av[5]);
 		id = ft_atoi(av[5]);
 		i = 0;
 		while (i < max)
