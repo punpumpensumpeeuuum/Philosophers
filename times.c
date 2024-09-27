@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   times.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/25 00:04:39 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/09/25 23:25:57 by elemesmo         ###   ########.fr       */
+/*   Created: 2024/09/25 00:04:39 by dinda-si          #+#    #+#             */
+/*   Updated: 2024/09/27 16:03:09 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print(t_philo *philo, char *text)
 
 	pthread_mutex_lock(&(philo->main->printer));
 	time = timestamps() - philo->main->start;
-	printf("%ld %d %s",time, philo->id , text);
+	printf("%ldms %d %s",time, philo->id , text);
 	pthread_mutex_unlock(&(philo->main->printer));
 }
 

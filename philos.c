@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/10 19:51:27 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/09/25 23:36:14 by elemesmo         ###   ########.fr       */
+/*   Created: 2024/09/10 19:51:27 by dinda-si          #+#    #+#             */
+/*   Updated: 2024/09/27 16:17:31 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,40 @@ void	eat(t_philo *philo)
 	betterusleep(philo->main->teat);
 	pthread_mutex_unlock(&(philo->l_fork));
 	pthread_mutex_unlock(philo->r_fork);
-	print(philo, " is sleeping\n");
+	print(philo, "is sleeping\n");
 	betterusleep(philo->main->tsleepy);
-	print(philo, " is thinking\n");
+	print(philo, "is thinking\n");
 }
 
-void	*philololo(void	*ele)
+void	*checkdeath(void *philooo)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)ele;
-	printf("%d\n", philo->id);
-	if (philo->id % 2 == 0){
-		// printf("a\n");
-		betterusleep(philo->main->teat / 10);
-		// printf("b\n");
+	philo = (t_philo *)philooo;
+	pthread_mutex_lock(&(philo->main->a));
+	if (philo->main->stop == 0 && timestamps() - philo->lastmeal >= (long)philo->main->tdie)
+	{
+		philo->main->stop = 1;
+		print(philo, "has died\n");
+		pthread_mutex_unlock(&(philo->main->a));
+		return (NULL);
 	}
+	pthread_mutex_unlock(&(philo->main->a));
+	return (NULL);
+}
+
+void	*philololo(void	*phi)
+{
+	t_philo		*philo;
+	pthread_t	t;
+
+	philo = (t_philo *)phi;
+	// printf("%d\n", philo->id);
+	if (philo->id % 2 == 0)
+		betterusleep(philo->main->teat / 10);
 	while (philo->main->stop == 0)
 	{
+		pthread_create(&t, NULL, checkdeath, philo);
 		forkfork(philo);
 		// printf("c\n");
 		eat(philo);
@@ -83,6 +99,7 @@ void	*philololo(void	*ele)
 			// printf("e\n");
 			return (NULL);
 		}
+		pthread_join(t, NULL);
 	}
 	return (NULL);
 }
