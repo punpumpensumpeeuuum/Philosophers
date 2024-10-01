@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inithelp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:35:32 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/09/27 12:44:38 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:11:42 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,18 @@ int	ft_isdigitbroken(char **str, int ac)
 	return (0);
 }
 
+void	numeatmaybe(t_main *main, int numero, int max)
+{
+	int	i;
+
+	i = 0;
+	while (i < max)
+	{
+		main->philo[i].numeat = numero;
+		i++;
+	}
+}
+
 void	setidforeach(t_main *main, int max, char **av, int ac)
 {
 	int	i;
@@ -77,21 +89,8 @@ void	setidforeach(t_main *main, int max, char **av, int ac)
 	if (ac == 6)
 	{
 		main->nummeal = ft_atoi(av[5]);
-		id = ft_atoi(av[5]);
-		i = 0;
-		while (i < max)
-		{
-			main->philo[i].numeat = id;
-			i++;
-		}
+		numeatmaybe(main, main->nummeal, max);
 	}
-}
-
-int	nodead(t_philo *philo, int i)
-{
-	if (i == 1)
-		philo->main->stop = 1;
 	else
-		return (0);
-	return (1);
+		numeatmaybe(main, -1, max);
 }

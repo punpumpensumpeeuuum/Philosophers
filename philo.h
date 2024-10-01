@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:28:38 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/09/27 12:44:49 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:08:17 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int			ft_atoi(const char *str);
 void		setidforeach(t_main *main, int max, char **av, int ac);
 int			startphilo(t_main *main);
 void		*philololo(void	*ele);
-int			nodead(t_philo *philo, int i);
+void		checkfork(t_main *main);
 
 long long	timestamps(void);
 void		betterusleep(int time);

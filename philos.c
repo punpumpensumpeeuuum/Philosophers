@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 19:51:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/09/27 16:17:31 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/01 23:29:00 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	startphilo(t_main *main)
 	int	i;
 
 	i = 0;
+	// checkfork(main);
 	while (i < main->numphilo)
 	{
 		pthread_mutex_init(&(main->philo[i].l_fork), NULL);
@@ -66,10 +67,13 @@ void	*checkdeath(void *philooo)
 
 	philo = (t_philo *)philooo;
 	pthread_mutex_lock(&(philo->main->a));
+	// printf("time: %lld\n", timestamps());
+	// printf("meal: %ld\n", philo->lastmeal);
+	// printf("tdie: %ld\n", (long)philo->main->tdie);
 	if (philo->main->stop == 0 && timestamps() - philo->lastmeal >= (long)philo->main->tdie)
 	{
 		philo->main->stop = 1;
-		print(philo, "has died\n");
+		print(philo, "has diedAHBUYAVSUGFVBAISVUGBIASBVGI\n");
 		pthread_mutex_unlock(&(philo->main->a));
 		return (NULL);
 	}
@@ -84,22 +88,22 @@ void	*philololo(void	*phi)
 
 	philo = (t_philo *)phi;
 	// printf("%d\n", philo->id);
-	if (philo->id % 2 == 0)
-		betterusleep(philo->main->teat / 10);
+	// usar uma mutex pa ver se o id dos philos ]e par ]e pa dar lock
+	if (!(philo->id % 2 == 0))
+		betterusleep(philo->main->tdie - philo->main->tdie / 10);
+	pthread_create(&t, NULL, checkdeath, philo);
 	while (philo->main->stop == 0)
 	{
-		pthread_create(&t, NULL, checkdeath, philo);
 		forkfork(philo);
 		// printf("c\n");
 		eat(philo);
 		// printf("d\n");
-		if (philo->numeat < 0)
+		if (philo->numeat == 0)
 		{
-
+			philo->main->stop = 1;
 			// printf("e\n");
 			return (NULL);
 		}
-		pthread_join(t, NULL);
 	}
 	return (NULL);
 }
