@@ -6,7 +6,7 @@
 /*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:27:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/09/27 12:44:44 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:13:07 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ int	setval(t_main *main, char **av, int ac)
 	if (!main->philo)
 		return (2);
 	main->numphilo = i;
+	main->cicle = 1;
 	setidforeach(main, i, av, ac);
 	main->tdie = ft_atoi(av[2]);
 	main->teat = ft_atoi(av[3]);
 	main->tsleepy = ft_atoi(av[4]);
 	pthread_mutex_init(&(main->printer), NULL);
 	pthread_mutex_init(&(main->a), NULL);
+	pthread_mutex_init(&(main->pares), NULL);
 	if (main->numphilo <= 0 || main->tdie <= 0 || \
 		main->teat <= 0 || main->tsleepy <= 0)
 		return (3);

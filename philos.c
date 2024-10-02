@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 19:51:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/01 23:29:00 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:20:03 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,29 +81,45 @@ void	*checkdeath(void *philooo)
 	return (NULL);
 }
 
+void	philorotine(t_philo *philo)
+{
+	pthread_t	t;
+	
+	pthread_create(&t, NULL, checkdeath, philo);
+	forkfork(philo);
+	eat(philo);
+	if (philo->numeat == 0)
+	{
+		philo->main->stop = 1;
+		return ;
+	}
+	return ;
+}
+
 void	*philololo(void	*phi)
 {
 	t_philo		*philo;
-	pthread_t	t;
 
 	philo = (t_philo *)phi;
-	// printf("%d\n", philo->id);
-	// usar uma mutex pa ver se o id dos philos ]e par ]e pa dar lock
-	if (!(philo->id % 2 == 0))
-		betterusleep(philo->main->tdie - philo->main->tdie / 10);
-	pthread_create(&t, NULL, checkdeath, philo);
 	while (philo->main->stop == 0)
 	{
-		forkfork(philo);
-		// printf("c\n");
-		eat(philo);
-		// printf("d\n");
-		if (philo->numeat == 0)
+		if (philo->main->cicle % 2 == 0) // se for par
 		{
-			philo->main->stop = 1;
-			// printf("e\n");
-			return (NULL);
+			if (!(philo->id % 2 == 0)) // se o philo for impar
+				pthread_mutex_lock(&(philo->main->pares));
+			else
+				philorotine(philo);
+			pthread_mutex_unlock(&(philo->main->pares));
 		}
+		else
+		{
+			if ((philo->id % 2 == 0))
+				pthread_mutex_lock(&(philo->main->pares));
+			else
+				philorotine(philo);
+			pthread_mutex_unlock(&(philo->main->pares));
+		}
+		philo->main->cicle++;
 	}
 	return (NULL);
 }
