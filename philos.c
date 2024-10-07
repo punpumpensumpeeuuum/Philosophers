@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 19:51:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/02 17:20:03 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/08 00:41:31 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	startphilo(t_main *main)
 	{	
 		if (pthread_join(main->philo[i].thread, NULL) != 0)
 			return (2);
+		if (pthread_join(main->philo[i].t, NULL) != 0)
+			return (3);
 		i++;
 	}
 	return (0);
@@ -42,22 +44,32 @@ int	startphilo(t_main *main)
 
 void	forkfork(t_philo *philo)
 {
+	if (philo->main->stop == 1)
+		return ;
 	pthread_mutex_lock(&(philo->l_fork));
 	print(philo, "has taken a fork\n");
+	if (philo->main->stop == 1)
+		return ;
 	pthread_mutex_lock(philo->r_fork);
 	print(philo, "has taken a fork\n");
 }
 
 void	eat(t_philo *philo)
 {
+	if (philo->main->stop == 1)
+		return ;
 	print(philo, "is eating\n");
 	philo->numeat--;
 	philo->lastmeal = timestamps();
 	betterusleep(philo->main->teat);
 	pthread_mutex_unlock(&(philo->l_fork));
 	pthread_mutex_unlock(philo->r_fork);
+	if (philo->main->stop == 1)
+		return ;
 	print(philo, "is sleeping\n");
 	betterusleep(philo->main->tsleepy);
+	if (philo->main->stop == 1)
+		return ;
 	print(philo, "is thinking\n");
 }
 
@@ -66,60 +78,77 @@ void	*checkdeath(void *philooo)
 	t_philo	*philo;
 
 	philo = (t_philo *)philooo;
-	pthread_mutex_lock(&(philo->main->a));
-	// printf("time: %lld\n", timestamps());
-	// printf("meal: %ld\n", philo->lastmeal);
-	// printf("tdie: %ld\n", (long)philo->main->tdie);
-	if (philo->main->stop == 0 && timestamps() - philo->lastmeal >= (long)philo->main->tdie)
-	{
-		philo->main->stop = 1;
-		print(philo, "has diedAHBUYAVSUGFVBAISVUGBIASBVGI\n");
-		pthread_mutex_unlock(&(philo->main->a));
-		return (NULL);
+	while (philo->main->stop == 0)
+	{	
+		pthread_mutex_lock(&(philo->main->a));
+		if (timestamps() - philo->lastmeal >= (long)philo->main->tdie)
+		{
+			philo->main->stop = 1;
+			print(philo, "has diedAHBUYAVSUGFVBAISVUGBIASBVGI\n");
+			pthread_mutex_unlock(&(philo->main->a));
+			return (NULL);
+		}
 	}
 	pthread_mutex_unlock(&(philo->main->a));
+	betterusleep(100);
 	return (NULL);
 }
 
 void	philorotine(t_philo *philo)
 {
-	pthread_t	t;
-	
-	pthread_create(&t, NULL, checkdeath, philo);
+	t_main *main = philo->main;
+
+	if (philo->main->stop == 1)
+		return ;
+	if (philo->dead == 0)
+	{
+		pthread_create(&philo->t, NULL, checkdeath, philo);
+		philo->dead++;
+	}
+	if (philo->main->stop == 1)
+		return ;
 	forkfork(philo);
+	if (philo->main->stop == 1)
+		return ;
 	eat(philo);
 	if (philo->numeat == 0)
-	{
-		philo->main->stop = 1;
-		return ;
-	}
-	return ;
+		main->stop = 1;
 }
 
-void	*philololo(void	*phi)
+void	*philololo(void *arg)
 {
-	t_philo		*philo;
+	t_philo *philo = (t_philo *)arg;
+	t_main *main = philo->main;
 
-	philo = (t_philo *)phi;
-	while (philo->main->stop == 0)
+	betterusleep(1);
+	while (main->stop == 0)
 	{
-		if (philo->main->cicle % 2 == 0) // se for par
+		if (philo->id % 2 == 0)
 		{
-			if (!(philo->id % 2 == 0)) // se o philo for impar
-				pthread_mutex_lock(&(philo->main->pares));
-			else
-				philorotine(philo);
-			pthread_mutex_unlock(&(philo->main->pares));
+			while (main->cicle != 0)
+			{
+				pthread_mutex_unlock(&main->pares);
+				betterusleep(100);
+				pthread_mutex_lock(&main->pares);
+			}
 		}
 		else
 		{
-			if ((philo->id % 2 == 0))
-				pthread_mutex_lock(&(philo->main->pares));
-			else
-				philorotine(philo);
-			pthread_mutex_unlock(&(philo->main->pares));
+			while (main->cicle != 1)
+			{
+				pthread_mutex_unlock(&main->pares);
+				betterusleep(100);
+				pthread_mutex_lock(&main->pares);
+			}
 		}
-		philo->main->cicle++;
+		pthread_mutex_lock(&main->pares);
+		philorotine(philo);
+		if (main->cicle == 0)
+			main->cicle = 1;
+		else
+			main->cicle = 0;
+		pthread_mutex_unlock(&main->pares);
+		betterusleep(100);
 	}
 	return (NULL);
 }

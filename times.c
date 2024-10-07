@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   times.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 00:04:39 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/09/27 16:03:09 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 23:16:43 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,34 @@ void	print(t_philo *philo, char *text)
 
 void	betterusleep(int time)
 {
-	int	now;
+	long int	now;
 
 	now = timestamps();
 	while (timestamps() - now < time)
 		usleep(time / 10);
 }
 
-long long	timestamps(void)
+long int	timestamps(void)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+void	freefree(t_main *main)
+{
+	int	i;
+
+	i = 0;
+	while (i < main->numphilo)
+	{
+		pthread_mutex_destroy(&main->philo[i].l_fork);
+		pthread_mutex_destroy(main->philo[i].r_fork);
+		i++;
+	}
+	free(main->philo);
+	pthread_mutex_destroy(&main->printer);
+	pthread_mutex_destroy(&main->a);
+	pthread_mutex_destroy(&main->pares);
 }

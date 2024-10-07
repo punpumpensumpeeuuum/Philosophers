@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:27:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/02 17:13:07 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:24:02 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	setval(t_main *main, char **av, int ac)
 	if (!main->philo)
 		return (2);
 	main->numphilo = i;
-	main->cicle = 1;
+	main->cicle = 0;
 	setidforeach(main, i, av, ac);
 	main->tdie = ft_atoi(av[2]);
 	main->teat = ft_atoi(av[3]);
@@ -63,5 +63,9 @@ int	main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		return (0);
 	if (setval(&main, av, ac) != 1)
-		printf ("%d\n", startphilo(&main));
+		startphilo(&main);
+	freefree(&main);
 }
+
+// allocs pro freear
+// ver melhor a logica do ciclo par e tal

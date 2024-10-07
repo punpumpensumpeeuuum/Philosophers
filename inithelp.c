@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:35:32 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/01 18:11:42 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:50:03 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	setidforeach(t_main *main, int max, char **av, int ac)
 	{
 		main->philo[i].id = id;
 		main->philo[i].numeat = 0;
+		main->philo[i].dead = 0;
 		main->philo[i].main = main;
 		id++;
 		i++;
