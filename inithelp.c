@@ -6,11 +6,29 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:35:32 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/07 16:50:03 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/08 23:41:07 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char )s1[i] - (unsigned char )s2[i]);
+		i++;
+	}
+	if (i != n)
+		return ((unsigned char )s1[i] - (unsigned char )s2[i]);
+	return (0);
+}
 
 int	ft_atoi(const char *str)
 {
@@ -84,6 +102,8 @@ void	setidforeach(t_main *main, int max, char **av, int ac)
 		main->philo[i].numeat = 0;
 		main->philo[i].dead = 0;
 		main->philo[i].main = main;
+		main->philo[i].fffork = 0;
+		pthread_mutex_init(&(main->philo[i].a), NULL);
 		id++;
 		i++;
 	}

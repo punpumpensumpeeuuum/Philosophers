@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 00:04:39 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/07 23:16:43 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/08 23:33:47 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ void	print(t_philo *philo, char *text)
 	long int	time;
 
 	pthread_mutex_lock(&(philo->main->printer));
+
 	time = timestamps() - philo->main->start;
-	printf("%ldms %d %s",time, philo->id , text);
+	if (philo->main->dontprint == 0)
+		printf("%ldms %d %s",time, philo->id , text);	
+	if (ft_strncmp(text, "died\n", 6) == 0)
+		philo->main->dontprint = 1;
 	pthread_mutex_unlock(&(philo->main->printer));
 }
 
@@ -48,10 +52,10 @@ void	freefree(t_main *main)
 	{
 		pthread_mutex_destroy(&main->philo[i].l_fork);
 		pthread_mutex_destroy(main->philo[i].r_fork);
+		pthread_mutex_destroy(&main->philo[i].a);
 		i++;
 	}
 	free(main->philo);
+	pthread_mutex_destroy(&main->d);
 	pthread_mutex_destroy(&main->printer);
-	pthread_mutex_destroy(&main->a);
-	pthread_mutex_destroy(&main->pares);
 }
