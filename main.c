@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:27:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/08 23:40:52 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:04:05 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	setval(t_main *main, char **av, int ac)
 	main->teat = ft_atoi(av[3]);
 	main->tsleepy = ft_atoi(av[4]);
 	main->dontprint = 0;
-	pthread_mutex_init(&(main->d), NULL);
+	pthread_mutex_init(&(main->ded), NULL);
+	pthread_mutex_init(&(main->para), NULL);
 	pthread_mutex_init(&(main->printer), NULL);
 	if (main->numphilo <= 0 || main->tdie <= 0 || \
 		main->teat <= 0 || main->tsleepy <= 0)
@@ -63,47 +64,8 @@ int	main(int ac, char **av)
 		return (0);
 	if (setval(&main, av, ac) != 1)
 	{
-		startphilo(&main);
+		printf("%d\n" ,startphilo(&main));
+		// printf()
 		freefree(&main);
 	}
 }
-
-
-// void	*philololo(void *arg)
-// {
-// 	t_philo *philo = (t_philo *)arg;
-// 	t_main *main = philo->main;
-
-// 	betterusleep(1);
-// 	pthread_create(&philo->t, NULL, checkdeath, philo);
-// 	while (main->stop == 0)
-// 	{
-// 		if (philo->id % 2 == 0)
-// 		{
-// 			while (main->cicle != 0)
-// 			{
-// 				pthread_mutex_unlock(&main->pares);
-// 				betterusleep(10);
-// 				pthread_mutex_lock(&main->pares);
-// 			}
-// 		}
-// 		else
-// 		{
-// 			while (main->cicle != 1)
-// 			{
-// 				pthread_mutex_unlock(&main->pares);
-// 				betterusleep(10);
-// 				pthread_mutex_lock(&main->pares);
-// 			}
-// 		}
-// 		pthread_mutex_lock(&main->pares);
-// 		philorotine(philo);
-// 		if (main->cicle == 0)
-// 			main->cicle = 1;
-// 		else
-// 			main->cicle = 0;
-// 		pthread_mutex_unlock(&main->pares);
-// 		betterusleep(10);
-// 	}
-// 	return (NULL);
-// }

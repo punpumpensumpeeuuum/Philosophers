@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:28:38 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/08 23:40:46 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:06:07 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ typedef struct l_philo
 	int				numeat;
 	int				dead;
 	int				fffork;
+	int				doneeating;
 	long			lastmeal;
 	struct l_main	*main;
 	pthread_t		t;
 	pthread_t		thread;
-	pthread_mutex_t	a;
+	pthread_mutex_t	meal;
+	pthread_mutex_t	check;
+	pthread_mutex_t	inc;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	l_fork;
 }	t_philo;
@@ -48,7 +51,8 @@ typedef struct l_main
 	long int		start;
 	t_philo			*philo;
 	pthread_mutex_t	printer;
-	pthread_mutex_t	d;
+	pthread_mutex_t	para;
+	pthread_mutex_t	ded;
 }	t_main;
 
 int			ft_isdigitbroken(char **str, int ac);

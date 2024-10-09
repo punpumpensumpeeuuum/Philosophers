@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   times.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 00:04:39 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/08 23:33:47 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:06:46 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,13 @@ void	freefree(t_main *main)
 	{
 		pthread_mutex_destroy(&main->philo[i].l_fork);
 		pthread_mutex_destroy(main->philo[i].r_fork);
-		pthread_mutex_destroy(&main->philo[i].a);
+		pthread_mutex_destroy(&main->philo[i].check);
+		pthread_mutex_destroy(&main->philo[i].meal);
+		pthread_mutex_destroy(&main->philo[i].inc);
 		i++;
 	}
 	free(main->philo);
-	pthread_mutex_destroy(&main->d);
+	pthread_mutex_destroy(&main->ded);
 	pthread_mutex_destroy(&main->printer);
+	pthread_mutex_destroy(&main->para);
 }

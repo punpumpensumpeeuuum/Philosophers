@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inithelp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:35:32 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/08 23:41:07 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:06:38 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,20 @@ void	setidforeach(t_main *main, int max, char **av, int ac)
 	i = 0;
 	while (i < max)
 	{
+		main->philo[i].doneeating = 0;
 		main->philo[i].id = id;
 		main->philo[i].numeat = 0;
 		main->philo[i].dead = 0;
 		main->philo[i].main = main;
 		main->philo[i].fffork = 0;
-		pthread_mutex_init(&(main->philo[i].a), NULL);
+		pthread_mutex_init(&(main->philo[i].check), NULL);
+		pthread_mutex_init(&(main->philo[i].meal), NULL);
+		pthread_mutex_init(&(main->philo[i].inc), NULL);
 		id++;
 		i++;
 	}
 	if (ac == 6)
-	{
 		main->nummeal = ft_atoi(av[5]);
-		numeatmaybe(main, main->nummeal, max);
-	}
 	else
-		numeatmaybe(main, -1, max);
+		main->nummeal = -1;
 }
