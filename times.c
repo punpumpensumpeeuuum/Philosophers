@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   times.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 00:04:39 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/09 16:06:46 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/10 01:24:02 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@ void	print(t_philo *philo, char *text)
 	long int	time;
 
 	pthread_mutex_lock(&(philo->main->printer));
-
 	time = timestamps() - philo->main->start;
 	if (philo->main->dontprint == 0)
-		printf("%ldms %d %s",time, philo->id , text);	
+		printf("%ldms %d %s", time, philo->id, text);
 	if (ft_strncmp(text, "died\n", 6) == 0)
 		philo->main->dontprint = 1;
 	pthread_mutex_unlock(&(philo->main->printer));
@@ -50,15 +49,21 @@ void	freefree(t_main *main)
 	i = 0;
 	while (i < main->numphilo)
 	{
-		pthread_mutex_destroy(&main->philo[i].l_fork);
-		pthread_mutex_destroy(main->philo[i].r_fork);
+		if (main->numphilo != 1)
+		{
+			pthread_mutex_destroy(&main->philo[i].l_fork);
+			pthread_mutex_destroy(main->philo[i].r_fork);
+		}
 		pthread_mutex_destroy(&main->philo[i].check);
 		pthread_mutex_destroy(&main->philo[i].meal);
 		pthread_mutex_destroy(&main->philo[i].inc);
 		i++;
 	}
 	free(main->philo);
-	pthread_mutex_destroy(&main->ded);
-	pthread_mutex_destroy(&main->printer);
-	pthread_mutex_destroy(&main->para);
+	if (main->numphilo > 1)
+	{
+		pthread_mutex_destroy(&main->ded);
+		pthread_mutex_destroy(&main->printer);
+		pthread_mutex_destroy(&main->para);
+	}
 }

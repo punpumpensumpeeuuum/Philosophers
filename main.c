@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:27:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/09 16:04:05 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/10/10 01:23:52 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,13 @@ int	main(int ac, char **av)
 		return (0);
 	if (setval(&main, av, ac) != 1)
 	{
-		printf("%d\n" ,startphilo(&main));
-		// printf()
+		printf("%d\n", startphilo(&main));
 		freefree(&main);
 	}
 }
+
+		// if (philo->id == 1) {
+		// 	printf("$$1	%ld\n", timestamps());
+		// 	printf("$$2	%ld\n", philo->lastmeal);
+		// 	printf("$$3	%ld\n", timestamps() - philo->lastmeal);
+		// 	printf("$$4	%ld\n", (long)philo->main->tdie);}
