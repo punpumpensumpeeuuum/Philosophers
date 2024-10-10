@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepphilo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 22:33:51 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/10/10 00:57:50 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:57:43 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ int	checkstop(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->main->ded);
 	if (philo->main->stop == 1)
+	{
+		pthread_mutex_unlock(&philo->main->ded);
 		return (1);
+	}
 	pthread_mutex_unlock(&philo->main->ded);
 	return (0);
 }
@@ -83,7 +86,6 @@ int	startphilo(t_main *main)
 	{
 		if (pthread_join(main->philo[i].thread, NULL) != 0)
 			return (2);
-		// printf("%d DONEEATING:%d id:%d eat:%d\n",i,main->philo[i].doneeating ,main->philo[i].id ,main->philo[i].numeat);
 		i++;
 	}
 	main->stop = 1;

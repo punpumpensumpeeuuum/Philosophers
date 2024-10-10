@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 19:51:27 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/10/10 01:24:29 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:56:26 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	forkfork(t_philo *philo)
 {
 	if (checkstop(philo) == 1)
 		return ;
-	if (philo->id < (philo->id + 1) % philo->main->numphilo)
+	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&(philo->l_fork));
 		print(philo, "has taken a fork\n");
 		pthread_mutex_lock(philo->r_fork);
 		print(philo, "has taken a fork\n");
 	}
-	else
+	else if (checkstop(philo) != 1 && philo->id % 2 != 0)
 	{
 		pthread_mutex_lock(philo->r_fork);
 		print(philo, "has taken a fork\n");
@@ -31,7 +31,11 @@ void	forkfork(t_philo *philo)
 		print(philo, "has taken a fork\n");
 	}
 	if (checkstop(philo) == 1)
+	{
+		pthread_mutex_unlock(&(philo->l_fork));
+		pthread_mutex_unlock(philo->r_fork);
 		return ;
+	}
 }
 
 void	eat(t_philo *philo)
@@ -55,8 +59,12 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&(philo->l_fork));
 	pthread_mutex_unlock(philo->r_fork);
 	print(philo, "is sleeping\n");
+	if (checkstop(philo) == 1)
+		return ;
 	betterusleep(philo->main->tsleepy);
 	print(philo, "is thinking\n");
+	if (checkstop(philo) == 1)
+		return ;
 }
 
 void	*checkdeath(void *philooo)
@@ -66,15 +74,13 @@ void	*checkdeath(void *philooo)
 	philo = (t_philo *)philooo;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->main->ded);
-		if (philo->main->stop == 1)
+		if (checkstop(philo) == 1)
 			break ;
-		pthread_mutex_unlock(&philo->main->ded);
 		betterusleep(1);
 		if (deadtwo(philo) == 1)
 			break ;
-		pthread_mutex_lock(&(philo->main->ded));
 		pthread_mutex_lock(&philo->check);
+		pthread_mutex_lock(&(philo->main->ded));
 		if (philo->main->stop == 1 || philo->doneeating == 1)
 		{
 			pthread_mutex_unlock(&(philo->main->ded));
@@ -84,6 +90,7 @@ void	*checkdeath(void *philooo)
 		pthread_mutex_unlock(&(philo->main->ded));
 		pthread_mutex_unlock(&philo->check);
 	}
+	betterusleep(10);
 	return (NULL);
 }
 
@@ -109,7 +116,7 @@ void	*philololo(void *arg)
 	pthread_create(&philo->t, NULL, checkdeath, philo);
 	if (philo->id == 1 && philo->id % 2 == 1)
 		betterusleep(50);
-	while (main->stop == 0 || philo->doneeating == 0)
+	while (philo->doneeating == 0)
 	{
 		if (checkstop(philo) == 1)
 			break ;
@@ -117,13 +124,9 @@ void	*philololo(void *arg)
 		if (checkstop(philo) == 1)
 			break ;
 		eat(philo);
-		if (donedone(philo) == 1)
+		if (donedone(philo) == 1 || checkstop(philo) == 1)
 			break ;
 	}
 	pthread_join(philo->t, NULL);
 	return (NULL);
 }
-
-// potetial deadlock com 3 ou 5
-// norminete
-// so pa 1 philo

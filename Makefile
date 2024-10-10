@@ -4,7 +4,7 @@ SRCS = main.c inithelp.c philos.c times.c prepphilo.c
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=thread -pthread
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread -pthread
 
 RM = rm -f
 
